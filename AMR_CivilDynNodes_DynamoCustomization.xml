@@ -1,0 +1,17 @@
+﻿<?xml version="1.0"?>
+<doc>
+	<assembly>
+		<name>AMR_CivilDynNodes</name>
+	</assembly>
+	<namespaces>
+		<!--Remap Namespaces-->
+		<namespace name="AMR_CivilDynNodes">
+			<category>AMR_CivilDynNodes</category>
+		</namespace>
+	</namespaces>
+	<classes>
+		<!--Remap Class Names-->
+		<class name="AMR_CivilDynNodes.CogoPoints" shortname="CogoPnts"/>
+		<class name="AMR_CivilDynNodes.SheetSetMgr" shortname="SheetSetManager"/>
+	</classes>
+</doc>
