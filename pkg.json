@@ -2,7 +2,7 @@
     "license": "",
     "file_hash": null,
     "name": "AMR_CivilDynNodes",
-    "version": "1.0.0",
+    "version": "1.1.52",
     "description": "Civil tools to extend Dynamo.",
     "group": "",
     "keywords": null,
@@ -15,6 +15,6 @@
     "repository_url": "",
     "contains_binaries": true,
     "node_libraries": [
-        "AMR_CivilDynNodes.CivilDynamoTools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        "AMR_CivilDynNodes.CivilDynamoTools, Version=1.1.52.1929, Culture=neutral, PublicKeyToken=null"
     ]
 }

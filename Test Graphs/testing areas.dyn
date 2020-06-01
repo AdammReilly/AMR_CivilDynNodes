@@ -1,0 +1,251 @@
+{
+  "Uuid": "5d1b2514-f28b-436b-b6a7-50bca4c5514b",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "testing areas",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "CivilDynamoTools.Sites.GetSites",
+      "Id": "bafc1dfa194b4205a5b41b277ece8129",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6da9725a36534a9ca37c813a632d6276",
+          "Name": "var[]",
+          "Description": "var[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Sites.GetSites ( ): var[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "CivilDynamoTools.Sites.GetParcels@var",
+      "Id": "db83c05da6f04ccc8bb3dd335ef431e1",
+      "Inputs": [
+        {
+          "Id": "990cf2e2738c4b758708d0b73fc4fc63",
+          "Name": "site",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ad2363d07a4b4e86974c008e5940ad25",
+          "Name": "var[]",
+          "Description": "var[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Sites.GetParcels (site: var): var[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "CivilDynamoTools.Parcels.BaseCurve2d@var",
+      "Id": "50d9d532980742f19a81ad2af36633ef",
+      "Inputs": [
+        {
+          "Id": "e2d8ec6deff84df2bc90568c428ddb1f",
+          "Name": "parcel",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 1,
+          "UseLevels": true,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8380f0a0a9904bc5b5af4b4d8ac57700",
+          "Name": "var",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Parcels.BaseCurve2d (parcel: var): var"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "CivilDynamoTools.Parcels.GetPolylineVertices@var",
+      "Id": "18c7e314af264cbbafefc63d459adaf2",
+      "Inputs": [
+        {
+          "Id": "c4f655b9f88c47fda05af944e21b9d83",
+          "Name": "polyline",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 1,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "0cfed4d368ba404a8eb4c250ae29021b",
+          "Name": "AutoCAD_Point2dCollection",
+          "Description": "AutoCAD_Point2dCollection",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Parcels.GetPolylineVertices (polyline: var): AutoCAD_Point2dCollection"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "CivilDynamoTools.Parcels.AreaByCoordinates@CivilDynamoTools.AutoCAD_Point2dCollection",
+      "Id": "d398487cc962458a8406796bc14a8e23",
+      "Inputs": [
+        {
+          "Id": "995f78f3aaee4f4f902ce7d39285b625",
+          "Name": "points",
+          "Description": "AutoCAD_Point2dCollection",
+          "UsingDefaultValue": false,
+          "Level": 1,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5eff90428b0b483190f43016fad073ab",
+          "Name": "double",
+          "Description": "double",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Parcels.AreaByCoordinates (points: AutoCAD_Point2dCollection): double"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "6da9725a36534a9ca37c813a632d6276",
+      "End": "990cf2e2738c4b758708d0b73fc4fc63",
+      "Id": "28e82b1eff97487ea2d090743381081d"
+    },
+    {
+      "Start": "ad2363d07a4b4e86974c008e5940ad25",
+      "End": "e2d8ec6deff84df2bc90568c428ddb1f",
+      "Id": "75f8fca88110408495241848be5fb000"
+    },
+    {
+      "Start": "8380f0a0a9904bc5b5af4b4d8ac57700",
+      "End": "c4f655b9f88c47fda05af944e21b9d83",
+      "Id": "0c5dff3e36df4c049b9e3fa41f78af9f"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.5.2.7915",
+      "RunType": "Automatic",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Sites.GetSites",
+        "Id": "bafc1dfa194b4205a5b41b277ece8129",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 65.5,
+        "Y": 318.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Sites.GetParcels",
+        "Id": "db83c05da6f04ccc8bb3dd335ef431e1",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 230.5,
+        "Y": 310.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Parcels.BaseCurve2d",
+        "Id": "50d9d532980742f19a81ad2af36633ef",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 478.5,
+        "Y": 320.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Parcels.GetPolylineVertices",
+        "Id": "18c7e314af264cbbafefc63d459adaf2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 721.5,
+        "Y": 323.0
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Parcels.AreaByCoordinates",
+        "Id": "d398487cc962458a8406796bc14a8e23",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1134.5,
+        "Y": 320.0
+      }
+    ],
+    "Annotations": [],
+    "X": -39.033739870996783,
+    "Y": 39.9760941784009,
+    "Zoom": 0.6913477938671877
+  }
+}

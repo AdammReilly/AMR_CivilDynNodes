@@ -6,12 +6,13 @@
 	<namespaces>
 		<!--Remap Namespaces-->
 		<namespace name="AMR_CivilDynNodes">
-			<category>AMR_CivilDynNodes</category>
+			<category>AMR_CivilNodes</category>
 		</namespace>
 	</namespaces>
 	<classes>
 		<!--Remap Class Names-->
 		<class name="AMR_CivilDynNodes.CogoPoints" shortname="CogoPnts"/>
-		<class name="AMR_CivilDynNodes.SheetSetMgr" shortname="SheetSetManager"/>
+		<class name="AMR_CivilDynNodes.Parcel" shortname="Parcel"/>
+		<class name="AMR_CivilDynNodes.Sites" shortname="Sites"/>
 	</classes>
 </doc>
