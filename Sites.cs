@@ -16,7 +16,7 @@ namespace CivilDynamoTools
         /// </summary>
         /// <returns>List of Sites.</returns>
         [IsVisibleInDynamoLibrary(true)]
-        public static List<Site> GetSites()
+        public static List<CivilObject> GetSites()
         {
             CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
 
@@ -24,18 +24,18 @@ namespace CivilDynamoTools
             //get the current document and database
             AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
-            List<Site> sites = new List<Site>();
+            List<CivilObject> sites = new List<CivilObject>();
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
                 foreach (ObjectId objectId in siteIds)
                 {
-                    sites.Add((Site)trans.GetObject(objectId, OpenMode.ForRead));
+                    sites.Add(new CivilObject((Site)trans.GetObject(objectId, OpenMode.ForRead)));
                 }
             }
             return sites;
         }
         [IsVisibleInDynamoLibrary(true)]
-        public static Site GetSiteByName(string siteName)
+        public static CivilObject GetSiteByName(string siteName)
         {
             CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
             Site site = null;
@@ -52,10 +52,10 @@ namespace CivilDynamoTools
                     { site = null; }
                 }
             }
-            return site;
+            return new CivilObject(site);
         }
         [IsVisibleInDynamoLibrary(true)]
-        public static Site GetSiteByIndex(int index)
+        public static CivilObject GetSiteByIndex(int index)
         {
             CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
             Site site = null;
@@ -67,7 +67,7 @@ namespace CivilDynamoTools
             {
                site = (Site)trans.GetObject(siteIds[index], OpenMode.ForRead);     
             }
-            return site;
+            return new CivilObject(site);
         }
 
         /// <summary>
@@ -76,11 +76,12 @@ namespace CivilDynamoTools
         /// <param name="site">A Site object</param>
         /// <returns>List of Parcels</returns>
         [IsVisibleInDynamoLibrary(true)]
-        public static List<Parcel> GetParcels(Site site)
+        public static List<Parcel> GetParcels(CivilObject siteObject)
         {
             //get the current document and database
             AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
+            Site site = (Site)siteObject._curCivilObject;
             ObjectIdCollection parcelIds = site.GetParcelIds();
             List<Parcel> parcels = new List<Parcel>();
             using (Transaction trans = db.TransactionManager.StartTransaction())
@@ -95,12 +96,13 @@ namespace CivilDynamoTools
         }
 
         [IsVisibleInDynamoLibrary(true)]
-        public static Parcel GetParcelByName(Site site, string parcelName)
+        public static Parcel GetParcelByName(CivilObject siteObject, string parcelName)
         {
             Parcel retParcel = null;
             //get the current document and database
             AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
+            Site site = (Site)siteObject._curCivilObject;
             ObjectIdCollection parcelIds = site.GetParcelIds();
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
@@ -116,12 +118,13 @@ namespace CivilDynamoTools
         }
 
         [IsVisibleInDynamoLibrary(true)]
-        public static Parcel GetParcelByIndex(Site site, int index)
+        public static Parcel GetParcelByIndex(CivilObject siteObject, int index)
         {
             Parcel retParcel = null;
             //get the current document and database
             AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
+            Site site = (Site)siteObject._curCivilObject;
             ObjectIdCollection parcelIds = site.GetParcelIds();
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
@@ -131,11 +134,12 @@ namespace CivilDynamoTools
         }
 
         [IsVisibleInDynamoLibrary(true)]
-        public static List<Autodesk.Civil.DatabaseServices.Entity> GetFeatureLines(Site site)
+        public static List<Autodesk.Civil.DatabaseServices.Entity> GetFeatureLines(CivilObject siteObject)
         {
             //get the current document and database
             AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
+            Site site = (Site)siteObject._curCivilObject;
             ObjectIdCollection flIds = site.GetFeatureLineIds();
             List<Autodesk.Civil.DatabaseServices.Entity> retVal = new List<Autodesk.Civil.DatabaseServices.Entity>();
             using (Transaction trans = db.TransactionManager.StartTransaction())

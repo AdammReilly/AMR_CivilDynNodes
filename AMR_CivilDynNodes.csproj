@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoCAD.cs" />
+    <Compile Include="CivilObject.cs" />
     <Compile Include="CogoPoints.cs" />
     <Compile Include="Parcel.cs" />
     <Compile Include="Parcel_Static.cs" />
@@ -164,7 +165,7 @@ xcopy /Y "$(ProjectDir)$(ProjectName)_DynamoCustomization.xml" "$(AppData)\Autod
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_StartDate="2020/5/20" BuildVersion_BuildAction="Build" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" />
+      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_BuildAction="Build" BuildVersion_StartDate="2020/5/20" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
