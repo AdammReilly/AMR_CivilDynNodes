@@ -7,6 +7,7 @@ using Autodesk.AutoCAD.GraphicsInterface;
 using Autodesk.Civil.DatabaseServices;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CivilDynamoTools
 {
@@ -18,14 +19,14 @@ namespace CivilDynamoTools
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-		[IsVisibleInDynamoLibrary(false)]
+		[IsVisibleInDynamoLibrary(false)] // make this true in order to test this function
         public static CivilDynamoTools.AutoCAD.Polyline BaseCurve2d(Parcel parcel)
         {
             //This will fail to be set if there are any 3d segments
             Autodesk.AutoCAD.DatabaseServices.Polyline poly = parcel.BaseCurve as Autodesk.AutoCAD.DatabaseServices.Polyline;
             if (poly != null)
             {
-                //return poly;
+               // return poly;
                 return new CivilDynamoTools.AutoCAD.Polyline(poly);
             }
 
@@ -34,6 +35,7 @@ namespace CivilDynamoTools
             object comparcel = parcel.AcadObject;
             object[] args = new object[1];
             args[0] = 0;
+            
             object loop = (object)comparcel.GetType().InvokeMember("ParcelLoops", System.Reflection.BindingFlags.GetProperty, null, comparcel, args);
 
             int count = (int)loop.GetType().InvokeMember("Count", System.Reflection.BindingFlags.GetProperty, null, loop, null);
@@ -55,6 +57,36 @@ namespace CivilDynamoTools
             //return poly;
             return new CivilDynamoTools.AutoCAD.Polyline(poly);
         }
+
+        [IsVisibleInDynamoLibrary(false)]
+        public static IList<Autodesk.DesignScript.Geometry.PolyCurve> GetPolyCurves(Parcel parcel)
+        {
+            IList<Autodesk.DesignScript.Geometry.PolyCurve> retPolys = new List<Autodesk.DesignScript.Geometry.PolyCurve>();
+            dynamic oParcel = parcel.AcadObject;
+            dynamic loops = oParcel.ParcelLoops;
+            foreach (dynamic loop in loops)
+            {
+                Autodesk.AutoCAD.DatabaseServices.Polyline poly = new Autodesk.AutoCAD.DatabaseServices.Polyline();
+                int count = loop.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    dynamic segElement = loop.Item(i);
+                    double x = segElement.StartX;
+                    double y = segElement.StartY;
+                    double bulge = 0;
+                    try
+                    {
+                        bulge = (double)segElement.Bulge;
+                    }
+                    catch { }
+                    poly.AddVertexAt(i, new Point2d(x, y), bulge, 0, 0);
+                }
+                poly.Closed = true;
+                retPolys.Add(ConvertPolylineToPolyCurve(poly));
+            }
+            return retPolys;
+        }
+
 
         /// <summary>
         /// Gets the outside area of the parcel
@@ -130,7 +162,60 @@ namespace CivilDynamoTools
             }
             return retVal;
         }
-
+       
+        [IsVisibleInDynamoLibrary(true)]
+        public static Autodesk.DesignScript.Geometry.PolyCurve ConvertDynamoPolylineToPolyCurve(Autodesk.AutoCAD.DynamoNodes.Polyline dynamoPolyline)
+        {
+            Autodesk.AutoCAD.DatabaseServices.Polyline polyline = (Autodesk.AutoCAD.DatabaseServices.Polyline)dynamoPolyline.InternalDBObject;
+            Autodesk.DesignScript.Geometry.PolyCurve retVal = null;
+            if (polyline != null)
+            {
+                // extract each segment
+                Autodesk.DesignScript.Geometry.Curve[] curves; // = new Autodesk.DesignScript.Geometry.Curve[polyline.NumberOfVertices];
+                if (polyline.Closed) { curves = new Autodesk.DesignScript.Geometry.Curve[polyline.NumberOfVertices]; }
+                else { curves = new Autodesk.DesignScript.Geometry.Curve[polyline.NumberOfVertices - 1]; }
+                // convert segment into Dynamo curve or line
+                int curIndex = 0;
+                while (curIndex <= polyline.NumberOfVertices)
+                {
+                    if (polyline.GetSegmentType(curIndex) == SegmentType.Arc)
+                    {
+                        Autodesk.DesignScript.Geometry.Arc curCurve;
+                        Autodesk.DesignScript.Geometry.Point centerPt = Autodesk.DesignScript.Geometry.Point.ByCoordinates(
+                            polyline.GetArcSegment2dAt(curIndex).Center.X,
+                            polyline.GetArcSegment2dAt(curIndex).Center.Y,
+                            0.0);
+                        Autodesk.DesignScript.Geometry.Point startPt = Autodesk.DesignScript.Geometry.Point.ByCoordinates(
+                            polyline.GetArcSegment2dAt(curIndex).StartPoint.X,
+                            polyline.GetArcSegment2dAt(curIndex).StartPoint.Y,
+                            0.0);
+                        Autodesk.DesignScript.Geometry.Point endPt = Autodesk.DesignScript.Geometry.Point.ByCoordinates(
+                            polyline.GetArcSegment2dAt(curIndex).EndPoint.X,
+                            polyline.GetArcSegment2dAt(curIndex).EndPoint.Y,
+                            0.0);
+                        curCurve = Autodesk.DesignScript.Geometry.Arc.ByCenterPointStartPointEndPoint(centerPt, endPt, startPt);
+                        curves.SetValue(curCurve, curIndex);
+                    }
+                    else if (polyline.GetSegmentType(curIndex) == SegmentType.Line)
+                    {
+                        Autodesk.DesignScript.Geometry.Line curLine;
+                        Autodesk.DesignScript.Geometry.Point startPt = Autodesk.DesignScript.Geometry.Point.ByCoordinates(
+                            polyline.GetLineSegment2dAt(curIndex).StartPoint.X,
+                            polyline.GetLineSegment2dAt(curIndex).StartPoint.Y,
+                            0.0);
+                        Autodesk.DesignScript.Geometry.Point endPt = Autodesk.DesignScript.Geometry.Point.ByCoordinates(
+                            polyline.GetLineSegment2dAt(curIndex).EndPoint.X,
+                            polyline.GetLineSegment2dAt(curIndex).EndPoint.Y,
+                            0.0);
+                        curLine = Autodesk.DesignScript.Geometry.Line.ByStartPointEndPoint(startPt, endPt);
+                        curves.SetValue(curLine, curIndex);
+                    }
+                    curIndex = curIndex + 1;
+                }
+                retVal = Autodesk.DesignScript.Geometry.PolyCurve.ByJoinedCurves(curves);
+            }
+            return retVal;
+        }
 
         // currently only works for non-curve segments
         [IsVisibleInDynamoLibrary(false)]
@@ -310,7 +395,7 @@ namespace CivilDynamoTools
             }
             catch (Exception ex)
             {
-                
+                Debug.WriteLine(ex.Message);
             }
             finally
             {
@@ -319,5 +404,23 @@ namespace CivilDynamoTools
             return retVal;
 
         }
+
+
+        // to calculate impervious cover per drainage area
+        //
+        // determine if the polys are within the drainage area
+            // recursively check the corners of the polys against the drainage area
+            // for each point, extend a line infinitely to the east
+            // if the number of crossings of the drainage area and infinite line is odd, it's inside
+            // double check by extending infinite to the west?
+        // exclude any outside
+        // get the total area of the polys inside - this would be easier with an Acad Polyline
+        // determine if any polys are within another poly
+        // subtract the internal polys from the total
+        // provide the total area
+
+
+
+
     }
 }

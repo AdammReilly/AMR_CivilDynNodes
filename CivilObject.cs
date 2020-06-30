@@ -2,12 +2,13 @@
 using Autodesk.AutoCAD.DatabaseServices;
 using Autodesk.Civil.DynamoNodes;
 using Autodesk.DesignScript.Runtime;
+using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace CivilDynamoTools
 {
     [IsVisibleInDynamoLibrary(true)]
-    public class CivilObject
+    public class CivilObject : Autodesk.Civil.DynamoNodes.CivilObject
     {
         #region variables
         internal Autodesk.Civil.DatabaseServices.Entity _curCivilObject;
@@ -17,7 +18,7 @@ namespace CivilDynamoTools
 
         #region constructor
         //[IsVisibleInDynamoLibrary(false)]
-        public CivilObject(Autodesk.Civil.DatabaseServices.Entity curCivilEntity)
+        public CivilObject(Autodesk.Civil.DatabaseServices.Entity curCivilEntity, bool isDynamoOwned) : base(curCivilEntity, isDynamoOwned)
         {
             _curCivilObject = curCivilEntity;
             _name = curCivilEntity.Name;
@@ -26,13 +27,13 @@ namespace CivilDynamoTools
         #endregion
         #region public methods
         [IsVisibleInDynamoLibrary(true)]
-        public CivilObject SetName(string name)
+        public Autodesk.Civil.DynamoNodes.CivilObject SetName(string name)
         {
             this._name = name;
             return this;
         }
         [IsVisibleInDynamoLibrary(true)]
-        public CivilObject SetDescription(string description)
+        public Autodesk.Civil.DynamoNodes.CivilObject SetDescription(string description)
         {
             this._description = description;
             return this;

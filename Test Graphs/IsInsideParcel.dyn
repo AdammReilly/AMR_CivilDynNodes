@@ -2,7 +2,7 @@
   "Uuid": "036627a4-4ddc-48ba-bc52-32d7743f8e4a",
   "IsCustomNode": false,
   "Description": null,
-  "Name": "testing parcels",
+  "Name": "IsInsideParcel",
   "ElementResolver": {
     "ResolutionMap": {}
   },
@@ -436,45 +436,6 @@
       "Description": "Select a Color from the palette"
     },
     {
-      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
-      "NodeType": "FunctionNode",
-      "FunctionSignature": "Autodesk.DesignScript.Geometry.Geometry.Split@Autodesk.DesignScript.Geometry.Geometry",
-      "Id": "1e197c6a4da14a059a38c56b767395f1",
-      "Inputs": [
-        {
-          "Id": "70c0db82231b47029eef0351c8782e0c",
-          "Name": "geometry",
-          "Description": "Autodesk.DesignScript.Geometry.Geometry",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        },
-        {
-          "Id": "88a9d29e9dac49b5a1f80e4f2d6bfe3c",
-          "Name": "other",
-          "Description": "Geometry",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Outputs": [
-        {
-          "Id": "3e4b61efe2e44677ade89e708fe1a4fe",
-          "Name": "Geometry[]",
-          "Description": "Geometry[]",
-          "UsingDefaultValue": false,
-          "Level": 2,
-          "UseLevels": false,
-          "KeepListStructure": false
-        }
-      ],
-      "Replication": "Auto",
-      "Description": "Split this Geometry using another Geometry as a cutting \"tool\"\n\nGeometry.Split (other: Geometry): Geometry[]"
-    },
-    {
       "ConcreteType": "Autodesk.AutoCAD.DynamoNodes.ObjectSelection, AutoCADNodesUI",
       "NodeType": "ExtensionNode",
       "InstanceId": [
@@ -496,15 +457,25 @@
       "Replication": "Disabled"
     },
     {
-      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "1ca786b2-adbd-4065-91c1-aa90aed12a14",
+      "FunctionType": "Graph",
       "NodeType": "FunctionNode",
-      "FunctionSignature": "CivilDynamoTools.Parcel.ConvertPolylineToPolyCurve@var",
-      "Id": "950573c97f294f33895ffb0ca05f0b80",
+      "Id": "b1a1793f7ab0435fb5300c267532d472",
       "Inputs": [
         {
-          "Id": "c08faf8cf3bb499aa97b1f6a00e1df53",
-          "Name": "polyline",
-          "Description": "var",
+          "Id": "e7a0fccb213a47d0b1336d55436cb618",
+          "Name": "polyCurveToTest",
+          "Description": "var[]..[]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "938818d6d0274b569294d904fbe7f1de",
+          "Name": "enclosingPolyCurve",
+          "Description": "var[]..[]",
           "UsingDefaultValue": false,
           "Level": 2,
           "UseLevels": false,
@@ -513,7 +484,37 @@
       ],
       "Outputs": [
         {
-          "Id": "7aa6bcd4bea7411fb9f53ab2cf4a36b4",
+          "Id": "c3ad848dc1bc4c29a3edc0a5f48a216d",
+          "Name": "result",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": ""
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "CivilDynamoTools.Parcel.ConvertDynamoPolylineToPolyCurve@Autodesk.AutoCAD.DynamoNodes.Polyline",
+      "Id": "858c9ff2133a47cbb1378b6222981758",
+      "Inputs": [
+        {
+          "Id": "ea91c8b496684155974328e163d015c6",
+          "Name": "dynamoPolyline",
+          "Description": "Polyline",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "1e10215166694495b4a6d32324be69cf",
           "Name": "PolyCurve",
           "Description": "PolyCurve",
           "UsingDefaultValue": false,
@@ -523,7 +524,7 @@
         }
       ],
       "Replication": "Auto",
-      "Description": "Parcel.ConvertPolylineToPolyCurve (polyline: var): PolyCurve"
+      "Description": "Parcel.ConvertDynamoPolylineToPolyCurve (dynamoPolyline: Polyline): PolyCurve"
     }
   ],
   "Connectors": [
@@ -584,8 +585,8 @@
     },
     {
       "Start": "27698309b3ac4a7b8a1bc111a42e7b91",
-      "End": "88a9d29e9dac49b5a1f80e4f2d6bfe3c",
-      "Id": "d9b5918796204ec998caeb6aaecc61f3"
+      "End": "938818d6d0274b569294d904fbe7f1de",
+      "Id": "a9b391a814c545b59c7871f22c7a5e35"
     },
     {
       "Start": "d89b1bdc10774697a4650531c2e28379",
@@ -599,16 +600,18 @@
     },
     {
       "Start": "2e0bb45b3ffe4f43b9aceed187d09df1",
-      "End": "c08faf8cf3bb499aa97b1f6a00e1df53",
-      "Id": "ab116781fd8e4ea9a967aa10a27011a7"
+      "End": "ea91c8b496684155974328e163d015c6",
+      "Id": "db0fbe5ee3064f1784cc6d5333e5d56a"
     },
     {
-      "Start": "7aa6bcd4bea7411fb9f53ab2cf4a36b4",
-      "End": "70c0db82231b47029eef0351c8782e0c",
-      "Id": "45cbc82c11fe40e380ed0c562e471e3a"
+      "Start": "1e10215166694495b4a6d32324be69cf",
+      "End": "e7a0fccb213a47d0b1336d55436cb618",
+      "Id": "4793d12d4bb74d859beeb34701891997"
     }
   ],
-  "Dependencies": [],
+  "Dependencies": [
+    "1ca786b2-adbd-4065-91c1-aa90aed12a14"
+  ],
   "NodeLibraryDependencies": [
     {
       "Name": "Civil3DToolkit",
@@ -628,7 +631,7 @@
         "0da2a5c920f84a85977f0ab105b9a8fc",
         "9274fdc740d84acdb9769f1a6e59e4f3",
         "8709c1b1bd9b43cf91834b042a10814a",
-        "950573c97f294f33895ffb0ca05f0b80"
+        "858c9ff2133a47cbb1378b6222981758"
       ]
     }
   ],
@@ -660,24 +663,24 @@
   ],
   "View": {
     "Dynamo": {
-      "ScaleFactor": 1.0,
+      "ScaleFactor": 10000.0,
       "HasRunWithoutCrash": true,
       "IsVisibleInDynamoLibrary": true,
       "Version": "2.5.2.7915",
-      "RunType": "Automatic",
+      "RunType": "Manual",
       "RunPeriod": "1000"
     },
     "Camera": {
       "Name": "Background Preview",
-      "EyeX": 23.249907373916685,
-      "EyeY": 53.793682078687226,
-      "EyeZ": 4.7005956657796233,
-      "LookX": 8.6863398270976582,
-      "LookY": -43.219266395494657,
-      "LookZ": -30.924662869196688,
-      "UpX": 0.17741267711248906,
-      "UpY": 0.754709580222777,
-      "UpZ": -0.63161554091056826
+      "EyeX": 31.728881619385049,
+      "EyeY": 43.249273086635228,
+      "EyeZ": -30.367583753548587,
+      "LookX": 0.027917535953029926,
+      "LookY": -32.209397763900029,
+      "LookZ": -2.3202078872173324,
+      "UpX": 0.011536012392673286,
+      "UpY": 0.28401534470392631,
+      "UpZ": -0.95875033475394189
     },
     "NodeViews": [
       {
@@ -787,7 +790,7 @@
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1185.2406812987117,
+        "X": 1183.4284223278737,
         "Y": -634.70073111068291
       },
       {
@@ -822,33 +825,33 @@
       },
       {
         "ShowGeometry": true,
-        "Name": "Geometry.Split",
-        "Id": "1e197c6a4da14a059a38c56b767395f1",
-        "IsSetAsInput": false,
-        "IsSetAsOutput": false,
-        "Excluded": false,
-        "X": 1495.1011167866866,
-        "Y": -1105.6177577876456
-      },
-      {
-        "ShowGeometry": true,
         "Name": "Select Object",
         "Id": "716b4a809c77432f85e4facb67677427",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 997.54972460443264,
-        "Y": -1134.2347426145966
+        "X": 1845.1404377032004,
+        "Y": -846.61956541526706
       },
       {
         "ShowGeometry": true,
-        "Name": "Parcel.ConvertPolylineToPolyCurve",
-        "Id": "950573c97f294f33895ffb0ca05f0b80",
+        "Name": "IsInsideParcel",
+        "Id": "b1a1793f7ab0435fb5300c267532d472",
         "IsSetAsInput": false,
         "IsSetAsOutput": false,
         "Excluded": false,
-        "X": 1197.8728833492378,
-        "Y": -1150.1822492409717
+        "X": 2462.7219959236895,
+        "Y": -733.18782559957674
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Parcel.ConvertDynamoPolylineToPolyCurve",
+        "Id": "858c9ff2133a47cbb1378b6222981758",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2101.4044852734178,
+        "Y": -812.25944396927071
       }
     ],
     "Annotations": [
@@ -872,8 +875,8 @@
         "Background": "#FFC1D676"
       }
     ],
-    "X": -561.04108905405315,
-    "Y": 1021.7063495779466,
-    "Zoom": 0.77415023753159851
+    "X": -753.58667786039859,
+    "Y": 736.4606149265,
+    "Zoom": 0.60326649162311174
   }
 }

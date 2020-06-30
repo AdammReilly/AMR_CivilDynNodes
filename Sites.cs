@@ -5,40 +5,58 @@ using Autodesk.Civil.DatabaseServices;
 using Autodesk.Civil.ApplicationServices;
 using System.Collections.Generic;
 using Autodesk.Civil.DynamoNodes;
+using Dynamo.Graph.Nodes;
 
 namespace CivilDynamoTools
 {
     [IsVisibleInDynamoLibrary(true)]
-    public static class Sites
+    public class Site : CivilObject
     {
+        internal Autodesk.Civil.DatabaseServices.Entity _curCivilObject;
+
+        protected Site(Autodesk.Civil.DatabaseServices.Entity entity, bool isDynamoOwned) : base(entity, isDynamoOwned)
+        {
+            _curCivilObject = entity;
+        }
+
         /// <summary>
-        /// Gets all sites in the Civil Document.
+        /// Gets all sites in the current Civil Document.
         /// </summary>
         /// <returns>List of Sites.</returns>
         [IsVisibleInDynamoLibrary(true)]
-        public static List<CivilObject> GetSites()
+        public static List<Profile> Sites
         {
-            CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
+            get
+            {
+                CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
 
-            ObjectIdCollection siteIds = civilDocument.GetSiteIds();
-            //get the current document and database
-            AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
-            Database db = doc.Database;
-            List<CivilObject> sites = new List<CivilObject>();
-            using (Transaction trans = db.TransactionManager.StartTransaction())
-            {
-                foreach (ObjectId objectId in siteIds)
+                ObjectIdCollection siteIds = civilDocument.GetSiteIds();
+                //get the current document and database
+                AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
+                Database db = doc.Database;
+                List<Profile> sites = new List<Profile>();
+                using (Transaction trans = db.TransactionManager.StartTransaction())
                 {
-                    sites.Add(new CivilObject((Site)trans.GetObject(objectId, OpenMode.ForRead)));
+                    foreach (ObjectId objectId in siteIds)
+                    {
+                        sites.Add(new Profile((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead), true));
+                    }
                 }
+                return sites;
             }
-            return sites;
         }
+
+        /// <summary>
+        /// Gets a Site matching the given name.
+        /// </summary>
+        /// <param name="siteName">The Site name to search for.</param>
+        /// <returns>The requested Site, or null.</returns>
+        [NodeCategory("Create")]
         [IsVisibleInDynamoLibrary(true)]
-        public static CivilObject GetSiteByName(string siteName)
+        public static Profile ByName(string siteName)
         {
             CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
-            Site site = null;
+            Profile site = null;
             ObjectIdCollection siteIds = civilDocument.GetSiteIds();
             //get the current document and database
             AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
@@ -47,110 +65,85 @@ namespace CivilDynamoTools
             {
                 foreach (ObjectId objectId in siteIds)
                 {
-                    site = (Site)trans.GetObject(objectId, OpenMode.ForRead);
+                    site = new Profile((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead), true);
                     if (site.Name != siteName)
                     { site = null; }
                 }
             }
-            return new CivilObject(site);
+            return site;
         }
+
+        /// <summary>
+        /// Gets a Site by the given index.
+        /// </summary>
+        /// <param name="index">The index number.</param>
+        /// <returns>The Site, or null.</returns>
+        [NodeCategory("Create")]
         [IsVisibleInDynamoLibrary(true)]
-        public static CivilObject GetSiteByIndex(int index)
+        public static Profile ByIndex(int index)
         {
             CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
-            Site site = null;
+            Profile site = null;
             ObjectIdCollection siteIds = civilDocument.GetSiteIds();
             //get the current document and database
             AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
             Database db = doc.Database;
             using (Transaction trans = db.TransactionManager.StartTransaction())
             {
-               site = (Site)trans.GetObject(siteIds[index], OpenMode.ForRead);     
+               site = new Profile((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(siteIds[index], OpenMode.ForRead), true);
             }
-            return new CivilObject(site);
+            return site;
         }
 
         /// <summary>
         /// Gets all Parcels in the given Site.
         /// </summary>
-        /// <param name="site">A Site object</param>
         /// <returns>List of Parcels</returns>
         [IsVisibleInDynamoLibrary(true)]
-        public static List<Parcel> GetParcels(CivilObject siteObject)
+        public List<Parcel> Parcels
         {
-            //get the current document and database
-            AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
-            Database db = doc.Database;
-            Site site = (Site)siteObject._curCivilObject;
-            ObjectIdCollection parcelIds = site.GetParcelIds();
-            List<Parcel> parcels = new List<Parcel>();
-            using (Transaction trans = db.TransactionManager.StartTransaction())
+            get
             {
-                foreach (ObjectId objectId in parcelIds)
+                //get the current document and database
+                AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
+                Database db = doc.Database;
+                Autodesk.Civil.DatabaseServices.Site site = (Autodesk.Civil.DatabaseServices.Site)_curCivilObject;
+                ObjectIdCollection parcelIds = site.GetParcelIds();
+                List<Parcel> parcels = new List<Parcel>();
+                using (Transaction trans = db.TransactionManager.StartTransaction())
                 {
-                    Parcel curParcel = new Parcel((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead));
-                    parcels.Add(curParcel);
+                    foreach (ObjectId objectId in parcelIds)
+                    {
+                        Parcel curParcel = new Parcel((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead), true);
+                        parcels.Add(curParcel);
+                    }
                 }
+                return parcels;
             }
-            return parcels;
         }
 
-        [IsVisibleInDynamoLibrary(true)]
-        public static Parcel GetParcelByName(CivilObject siteObject, string parcelName)
-        {
-            Parcel retParcel = null;
-            //get the current document and database
-            AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
-            Database db = doc.Database;
-            Site site = (Site)siteObject._curCivilObject;
-            ObjectIdCollection parcelIds = site.GetParcelIds();
-            using (Transaction trans = db.TransactionManager.StartTransaction())
-            {
-                foreach (ObjectId objectId in parcelIds)
-                {
-                    retParcel = new Parcel((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead));
-                    if (retParcel.GetName != parcelName)
-                    { retParcel = null; }
-                    else { return retParcel; }
-                }
-            }
-            return retParcel;
-        }
 
         [IsVisibleInDynamoLibrary(true)]
-        public static Parcel GetParcelByIndex(CivilObject siteObject, int index)
+        public IList<Autodesk.Civil.DatabaseServices.Entity> FeatureLines
         {
-            Parcel retParcel = null;
-            //get the current document and database
-            AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
-            Database db = doc.Database;
-            Site site = (Site)siteObject._curCivilObject;
-            ObjectIdCollection parcelIds = site.GetParcelIds();
-            using (Transaction trans = db.TransactionManager.StartTransaction())
+            get
             {
-                    retParcel = new Parcel((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(parcelIds[index], OpenMode.ForRead));
-            }
-            return retParcel;
-        }
-
-        [IsVisibleInDynamoLibrary(true)]
-        public static List<Autodesk.Civil.DatabaseServices.Entity> GetFeatureLines(CivilObject siteObject)
-        {
-            //get the current document and database
-            AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
-            Database db = doc.Database;
-            Site site = (Site)siteObject._curCivilObject;
-            ObjectIdCollection flIds = site.GetFeatureLineIds();
-            List<Autodesk.Civil.DatabaseServices.Entity> retVal = new List<Autodesk.Civil.DatabaseServices.Entity>();
-            using (Transaction trans = db.TransactionManager.StartTransaction())
-            {
-                foreach (ObjectId objectId in flIds)
+                //get the current document and database
+                AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
+                Database db = doc.Database;
+                Autodesk.Civil.DatabaseServices.Site site = (Autodesk.Civil.DatabaseServices.Site)_curCivilObject;
+                ObjectIdCollection flIds = site.GetFeatureLineIds();
+                IList<Autodesk.Civil.DatabaseServices.Entity> retVal = new List<Autodesk.Civil.DatabaseServices.Entity>();
+                using (Transaction trans = db.TransactionManager.StartTransaction())
                 {
-                    Autodesk.Civil.DatabaseServices.Entity curFLine = (Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead);
-                    retVal.Add(curFLine);
+                    foreach (ObjectId objectId in flIds)
+                    {
+                        Autodesk.Civil.DatabaseServices.Entity curFLine = (Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead);
+                        retVal.Add(curFLine);
+                    }
                 }
+                return retVal;
             }
-            return retVal;
         }
 
     }
