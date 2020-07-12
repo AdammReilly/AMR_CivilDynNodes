@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("AMR_CivilDynNodes")]
-[assembly: AssemblyDescription("A set of Dynamo nodes to expand on the access to Civil 3D objects.")]
+[assembly: AssemblyDescription("A set of Dynamo nodes to expand on the access to Civil 3D objects, styles and label styles.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("AMR")]
 [assembly: AssemblyProduct("AMR_CivilDynNodes")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.81.1904")]
-[assembly: AssemblyFileVersion("1.1.81.1904")]
+[assembly: AssemblyVersion("2021.2.4.1715")]
+[assembly: AssemblyFileVersion("2021.2.4.1715")]

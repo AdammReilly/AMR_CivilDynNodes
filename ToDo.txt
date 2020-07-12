@@ -1,0 +1,30 @@
+﻿I want to expand Dynamo to include as much of the objects below as possible.
+The structure below is how I want the Dynamo interface to organize the node categories
+
+CivilDynamoTools
+  Objects
+	Alignment
+	Profile
+	Profile View
+	Surface
+	CogoPoint
+	Sample Line
+	Section
+	Section View
+	Site
+	Parcel
+	
+  Labels
+	Alignment
+		Label Sets
+	Profile
+		Label Sets
+	Profile View
+	Surface
+	CogoPoint?
+	Sample Line
+	Section
+		Label Sets
+	Section View
+	Site
+	Parcel

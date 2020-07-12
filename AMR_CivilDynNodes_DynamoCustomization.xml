@@ -5,14 +5,110 @@
 	</assembly>
 	<namespaces>
 		<!--Remap Namespaces-->
-		<namespace name="AMR_CivilDynNodes">
-			<category>AMR_CivilNodes</category>
+		<namespace name="CivilDynamoTools">
+			<category>AMR Civil Nodes</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.Objects">
+			<category>AMR Civil Nodes.Objects</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles">
+			<category>AMR Civil Nodes.Label Styles</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Alignments">
+			<category>AMR Civil Nodes.Label Styles.Alignments</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Alignments.Station">
+			<category>AMR Civil Nodes.Label Styles.Alignments.Station</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.CogoPoints">
+			<category>AMR Civil Nodes.Label Styles.Cogo Points</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Parcels">
+			<category>AMR Civil Nodes.Label Styles.Parcels</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Profiles">
+			<category>AMR Civil Nodes.Label Styles.Profiles</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.ProfileViews">
+			<category>AMR Civil Nodes.Label Styles.Profile Views</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.SampleLines">
+			<category>AMR Civil Nodes.Label Styles.Sample Lines</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Sections">
+			<category>AMR Civil Nodes.Label Styles.Sections</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.SectionViews">
+			<category>AMR Civil Nodes.Label Styles.Section Views</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Sites">
+			<category>AMR Civil Nodes.Label Styles.Sites</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Surfaces">
+			<category>AMR Civil Nodes.Label Styles.Surfaces</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Catchments">
+			<category>AMR Civil Nodes.Label Styles.Catchments</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Intersections">
+			<category>AMR Civil Nodes.Label Styles.Intersections</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.General">
+			<category>AMR Civil Nodes.Label Styles.General</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Pipes">
+			<category>AMR Civil Nodes.Label Styles.Pipes</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.MatchLines">
+			<category>AMR Civil Nodes.Label Styles.Match Lines</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.Structures">
+			<category>AMR Civil Nodes.Label Styles.Structures</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.ViewFrames">
+			<category>AMR Civil Nodes.Label Styles.View Frames</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.SurveyFigures">
+			<category>AMR Civil Nodes.Label Styles.Survey Figures</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.LabelStyles.General">
+			<category>AMR Civil Nodes.Label Styles.General</category>
+		</namespace>
+		
+		<!--
+		<namespace name="CivilDynamoTools.LabelStyles.">
+			<category>AMR Civil Nodes.Label Styles.</category>
+		</namespace>
+		-->
+		
+		<namespace name="CivilDynamoTools.Styles">
+			<category>AMR Civil Nodes.Styles</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.Styles.General">
+			<category>AMR Civil Nodes.Styles.General</category>
+		</namespace>
+		
+		<namespace name="CivilDynamoTools.Styles.Tables">
+			<category>AMR Civil Nodes.Tables</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.Styles.Tables.Alignments">
+			<category>AMR Civil Nodes.Tables.Alignments</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.Styles.Tables.Surfaces">
+			<category>AMR Civil Nodes.Tables.Surfaces</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.Styles.Tables.QTO">
+			<category>AMR Civil Nodes.Tables.Quantity Takeoff</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.Styles.Tables.Parcels">
+			<category>AMR Civil Nodes.Tables.Parcels</category>
+		</namespace>
+		<namespace name="CivilDynamoTools.Styles.Tables.SectionViews">
+			<category>AMR Civil Nodes.Tables.Section Views</category>
 		</namespace>
 	</namespaces>
 	<classes>
 		<!--Remap Class Names-->
-		<class name="AMR_CivilDynNodes.CogoPoints" shortname="CogoPnts"/>
-		<class name="AMR_CivilDynNodes.Parcel" shortname="Parcel"/>
-		<class name="AMR_CivilDynNodes.Sites" shortname="Sites"/>
+		<class name="CivilDynamoTools.Styles.AlignmentStyle" shortname="Alignments" />
 	</classes>
 </doc>
