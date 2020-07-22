@@ -19,6 +19,7 @@ namespace CivilDynamoTools.Objects
             _curCivilObject = curCivilEntity;
             _name = curCivilEntity.Name;
             _description = curCivilEntity.Description;
+            
         }
         #endregion
 
@@ -26,17 +27,35 @@ namespace CivilDynamoTools.Objects
         [IsVisibleInDynamoLibrary(false)]
         public Autodesk.Civil.DynamoNodes.CivilObject SetName(string name)
         {
-            Autodesk.AutoCAD.ApplicationServices.Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
-            Autodesk.AutoCAD.DatabaseServices.Database db = doc.Database;
-            using (Autodesk.AutoCAD.DatabaseServices.Transaction trans = db.TransactionManager.StartTransaction())
-            {
-                Autodesk.Civil.DatabaseServices.Entity entity = (Autodesk.Civil.DatabaseServices.Entity) trans.GetObject(_curCivilObject.ObjectId, OpenMode.ForWrite);
-                entity.Name = name;
-                trans.Commit();
-            }
+            //Autodesk.AutoCAD.ApplicationServices.Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            //Autodesk.AutoCAD.DatabaseServices.Database db = doc.Database;
+            //using (Autodesk.AutoCAD.DatabaseServices.Transaction trans = db.TransactionManager.StartTransaction())
+            //{
+            //    Autodesk.Civil.DatabaseServices.Entity entity = (Autodesk.Civil.DatabaseServices.Entity) trans.GetObject(_curCivilObject.ObjectId, OpenMode.ForWrite);
+            //    try { entity.Name = name; }
+            //    catch (System.Exception ex)
+            //    {
+            //        // if
+            //        // An exception of type 'System.ArgumentException' occurred in AeccDbMgd.dll but was not handled in user code
+            //        // Additional information: The name may exist. occurred
+            //        System.Diagnostics.Debug.WriteLine(ex.Message);
+            //        if (ex.Message == "The name may exist.")
+            //        {
+            //            // then append the name with a number
+            //            // possibly refactor this method to create a private method that accepts an optional counter
+            //            // if counter is supplied, add as a suffix and try
+            //            // if caught, call this method again and increment the counter
+            //        }
+            //    }
+            //    finally
+            //    { entity.Name = name; }
+            //    trans.Commit();
+            //}
+            SetNameWithCounter(name);
             this._name = name;
             return this;
         }
+
         [IsVisibleInDynamoLibrary(false)]
         public Autodesk.Civil.DynamoNodes.CivilObject SetDescription(string description)
         {
@@ -62,6 +81,49 @@ namespace CivilDynamoTools.Objects
                 entity.StyleId = civilStyle.InternalObjectId;
                 trans.Commit();
             }
+            return this;
+        }
+
+        #endregion
+
+        #region privateMethods
+        private Autodesk.Civil.DynamoNodes.CivilObject SetNameWithCounter(string name, int counter = 0)
+        {
+            Autodesk.AutoCAD.ApplicationServices.Document doc = Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument;
+            Autodesk.AutoCAD.DatabaseServices.Database db = doc.Database;
+            using (Autodesk.AutoCAD.DatabaseServices.Transaction trans = db.TransactionManager.StartTransaction())
+            {
+                Autodesk.Civil.DatabaseServices.Entity entity = (Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(_curCivilObject.ObjectId, OpenMode.ForWrite);
+                try { entity.Name = name; }
+                catch (System.Exception ex)
+                {
+                    // if
+                    // An exception of type 'System.ArgumentException' occurred in AeccDbMgd.dll but was not handled in user code
+                    // Additional information: The name may exist. occurred
+                    if (ex.Message == "The name may exist.")
+                    {
+                        // check if the name already has the current counter
+                        string suffix = " - " + counter.ToString();
+                        try { entity.Name = name + suffix; }
+                        catch (System.Exception ex2)
+                        {
+                            // if
+                            if (ex2.Message == "The name may exist.")
+                            {
+                                counter += 1;
+                                SetNameWithCounter(name, counter);
+                            }
+                        }
+                        // possibly refactor this method to create a private method that accepts an optional counter
+                        // if counter is supplied, add as a suffix and try
+                        // if caught, call this method again and increment the counter
+                    }   
+                }
+                finally
+                {  }
+                trans.Commit();
+            }
+            this._name = name;
             return this;
         }
 

@@ -39,7 +39,7 @@ namespace CivilDynamoTools.Objects
         /// <returns>A parcel.</returns>
         [NodeCategory("Create")]
         [IsVisibleInDynamoLibrary(true)]
-        public static Parcel ByName(Autodesk.AutoCAD.DynamoNodes.Document document, Profile siteObject, string parcelName)
+        public static Parcel ByName(Autodesk.AutoCAD.DynamoNodes.Document document, Site siteObject, string parcelName)
         {
             Parcel retParcel = null;
             //get the current document and database
@@ -51,7 +51,7 @@ namespace CivilDynamoTools.Objects
             {
                 foreach (Autodesk.AutoCAD.DatabaseServices.ObjectId objectId in parcelIds)
                 {
-                    retParcel = new Parcel((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead), true);
+                    retParcel = new Parcel((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead), false);
                     if (retParcel.Name != parcelName)
                     { retParcel = null; }
                     else { return retParcel; }
@@ -69,7 +69,7 @@ namespace CivilDynamoTools.Objects
         /// <returns>A parcel.</returns>
         [NodeCategory("Create")]
         [IsVisibleInDynamoLibrary(true)]
-        public static Parcel ByNumber(Autodesk.AutoCAD.DynamoNodes.Document document, Profile siteObject, int parcelNumber)
+        public static Parcel ByNumber(Autodesk.AutoCAD.DynamoNodes.Document document, Site siteObject, int parcelNumber)
         {
             Autodesk.Civil.DatabaseServices.Parcel retParcel = null;
             //get the current document and database
@@ -99,7 +99,7 @@ namespace CivilDynamoTools.Objects
         /// <returns>A parcel</returns>
         [NodeCategory("Create")]
         [IsVisibleInDynamoLibrary(true)]
-        public static Parcel ByIndex(Autodesk.AutoCAD.DynamoNodes.Document document, Profile siteObject, int index)
+        public static Parcel ByIndex(Autodesk.AutoCAD.DynamoNodes.Document document, Site siteObject, int index)
         {
             Parcel retParcel = null;
             //get the current document and database
@@ -113,6 +113,7 @@ namespace CivilDynamoTools.Objects
             }
             return retParcel;
         }
+
 
         #endregion
 

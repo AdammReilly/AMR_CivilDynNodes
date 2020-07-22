@@ -41,6 +41,7 @@ namespace CivilDynamoTools.Objects
             return new ProfileView((Autodesk.Civil.DatabaseServices.Entity)profileView, true);
         }
 
+
         #endregion
 
         #region publichMethods
@@ -70,6 +71,8 @@ namespace CivilDynamoTools.Objects
             return this;
             
         }
+
+
 
         #region properties
 

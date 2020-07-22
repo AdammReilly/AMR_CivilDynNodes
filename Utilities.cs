@@ -17,6 +17,18 @@ namespace CivilDynamoTools
                 {
                     retId = lyrTable[layerName];
                 }
+                else
+                {
+                    LayerTableRecord newLayer = new LayerTableRecord();
+                    LayerTableRecord defLayer = (LayerTableRecord)lyrTable["0"].GetObject(OpenMode.ForRead);
+                    newLayer.Name = layerName;
+                    newLayer.Color = defLayer.Color;
+                    newLayer.LineWeight = defLayer.LineWeight;
+                    newLayer.LinetypeObjectId = defLayer.LinetypeObjectId;
+                    lyrTable.UpgradeOpen();
+                    retId = lyrTable.Add(newLayer);
+                    trans.AddNewlyCreatedDBObject(newLayer, true);
+                }
                 trans.Commit();
             }
             return retId;

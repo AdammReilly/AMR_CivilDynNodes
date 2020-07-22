@@ -44,11 +44,62 @@ namespace CivilDynamoTools.Objects
             {
                 foreach (ObjectId surfaceId in surfaceIds)
                 {
-                    surfaces.Add(new Surface((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(surfaceId, OpenMode.ForRead), true));
+                    surfaces.Add(new Surface((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(surfaceId, OpenMode.ForRead), false));
                 }
             }
             return surfaces;
         }
+
+
+        /// <summary>
+        /// Gets a Surface matching the given name.
+        /// </summary>
+        /// <param name="surfaceName">The Surface name to search for.</param>
+        /// <returns>The requested Surface, or null.</returns>
+        [NodeCategory("Create")]
+        [IsVisibleInDynamoLibrary(true)]
+        public static Surface ByName(string surfaceName)
+        {
+            CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
+            Surface surface = null;
+            ObjectIdCollection surfaceIds = civilDocument.GetSurfaceIds();
+            //get the current document and database
+            AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            using (Transaction trans = db.TransactionManager.StartTransaction())
+            {
+                foreach (ObjectId objectId in surfaceIds)
+                {
+                    surface = new Surface((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead), false);
+                    if (surface.Name != surfaceName)
+                    { surface = null; }
+                }
+            }
+            return surface;
+        }
+
+        /// <summary>
+        /// Gets a Surface by the given index.
+        /// </summary>
+        /// <param name="index">The index number.</param>
+        /// <returns>The Surface, or null.</returns>
+        [NodeCategory("Create")]
+        [IsVisibleInDynamoLibrary(true)]
+        public static Surface ByIndex(int index)
+        {
+            CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilApplication.ActiveDocument;
+            Surface surface = null;
+            ObjectIdCollection surfaceIds = civilDocument.GetSurfaceIds();
+            //get the current document and database
+            AcadApp.Document doc = AcadApp.Application.DocumentManager.MdiActiveDocument;
+            Database db = doc.Database;
+            using (Transaction trans = db.TransactionManager.StartTransaction())
+            {
+                surface = new Surface((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(surfaceIds[index], OpenMode.ForRead), false);
+            }
+            return surface;
+        }
+
 
         #endregion
 

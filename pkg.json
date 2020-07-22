@@ -2,8 +2,8 @@
     "license": "",
     "file_hash": null,
     "name": "AMR_CivilDynNodes",
-    "version": "2021.2.4",
-    "description": "Civil 3D extensions. Allows read-only access to mosts object and label styles. Slowly building out access to objects, starting with parcels, profiles and points. If you have questions or suggestions, you can reach me on Twitter or LinkedIn, @AdammReilly",
+    "version": "2021.2.26",
+    "description": "Civil 3D extensions. Allows read-only access to mosts object and label styles. Slowly building out access to objects, starting with parcels, profiles and points. Sample graphs are included in the extras folder, when available. If you have questions or suggestions, you can reach me on Twitter or LinkedIn, @AdammReilly",
     "group": "",
     "keywords": null,
     "dependencies": [],
@@ -12,9 +12,9 @@
     "engine": "dynamo",
     "engine_metadata": "",
     "site_url": "",
-    "repository_url": "",
+    "repository_url": "https://github.com/AdammReilly/AMR_CivilDynNodes",
     "contains_binaries": true,
     "node_libraries": [
-        "AMR_CivilDynNodes, Version=2021.2.4.1651, Culture=neutral, PublicKeyToken=null"
+        "AMR_CivilDynNodes, Version=2021.2.26.1953, Culture=neutral, PublicKeyToken=null"
     ]
 }

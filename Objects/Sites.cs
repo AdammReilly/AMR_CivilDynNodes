@@ -40,12 +40,13 @@ namespace CivilDynamoTools.Objects
                 {
                     foreach (ObjectId objectId in siteIds)
                     {
-                        sites.Add(new Site((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead), true));
+                        sites.Add(new Site((Autodesk.Civil.DatabaseServices.Entity)trans.GetObject(objectId, OpenMode.ForRead), false));
                     }
                 }
                 return sites;
             }
         }
+
 
         /// <summary>
         /// Gets a Site matching the given name.

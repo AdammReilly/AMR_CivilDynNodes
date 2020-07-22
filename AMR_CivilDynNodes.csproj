@@ -156,6 +156,7 @@
   <ItemGroup>
     <Compile Include="Labels\Profile View\ProfileBandSet.cs" />
     <Compile Include="Objects\ProfileView.cs" />
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Objects\CivilObject.cs" />
     <Compile Include="Labels\Alignments\AlignmentCurveLabel.cs" />

@@ -26,7 +26,7 @@ namespace CivilDynamoTools.Objects
            // _curCivilObject = curCivilEntity;
         }
 
-        public static Profile ByAlignmentAndSurface(Autodesk.AutoCAD.DynamoNodes.Document document, Alignment parentAlignment, Surface parentSurface, string name, Autodesk.AutoCAD.DynamoNodes.Layer layer, Styles.ProfileStyle profileStyle, ProfileLabelSet profileLabelSet)
+        public static Profile ByAlignmentAndSurface(Autodesk.AutoCAD.DynamoNodes.Document document, Alignment parentAlignment, Surface parentSurface, string name, Styles.ProfileStyle profileStyle, ProfileLabelSet profileLabelSet)
         {
             Autodesk.Civil.DatabaseServices.Profile newProfile = null;
             AcadApp.Document curDoc = document.AcDocument;
@@ -37,13 +37,14 @@ namespace CivilDynamoTools.Objects
                 string oName = name;
                 // need to assign these values based on the string inputs
                 LayerTable lyrTable = (LayerTable)trans.GetObject(db.LayerTableId, OpenMode.ForRead);
-                ObjectId layerId = Utilities.GetLayerByName(db, layer.Name); // id of layer to add profile to
+                //ObjectId layerId = Utilities.GetLayerByName(db, layer.Name); // id of layer to add profile to
+                // get the layer name defined in the settings
+                ObjectId layerId = Utilities.GetLayerByName(db, CivilDynamoTools.Settings.Settings.GetLayerName(document, Autodesk.Civil.Settings.SettingsObjectLayerType.Profile, name));
                 ObjectId styleId = profileStyle.InternalObjectId; // id of style to assign the profile
                 ObjectId labelSetId = profileLabelSet.InternalObjectId; // id of label set to assign
                 CivilDocument civilDocument = Autodesk.Civil.ApplicationServices.CivilDocument.GetCivilDocument(document.AcDocument.Database);
                 ObjectIdCollection alignIds = civilDocument.GetAlignmentIds();
                 // make sure the name doesn't already exist for any profile
-                bool exists = false;
                 int copy = 1;
                 foreach (ObjectId aId in alignIds)
                 {
@@ -66,6 +67,7 @@ namespace CivilDynamoTools.Objects
             if (newProfile == null) { return null; }
             else { return new Profile(newProfile, true); }
         }
+
 
         // Create from a feature line. Will require feature line object (still missing)
         //Autodesk.Civil.DatabaseServices.Profile.CreateFromFeatureLine(profileName, corridorFeatureLine, alignmentId, layerId, styleId, labelSetId);
